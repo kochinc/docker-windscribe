@@ -10,9 +10,6 @@ usermod -u $PUID docker_user
 groupmod -g $PGID docker_group
 chown -R docker_user:docker_group /config
 
-# Add an route to actual local network.
-ip route add `ip route list default | sed -e "s|default|$LOCAL_NET|"`
-
 # Create new /etc/resolv.conf from $DNS1 and $DNS2
 echo -e "${DNS1:+nameserver $DNS1\n}${DNS2:+nameserver $DNS2}" > /etc/resolv.conf
 cat /etc/resolv.conf
@@ -37,6 +34,9 @@ fi
 if [ ! $? -eq 0 ]; then
     exit 5;
 fi
+
+# Add an route to actual local network.
+ip route add `ip route list default | sed -e "s:default:$LOCAL_NET:"`
 
 /opt/scripts/vpn-protocol.expect
 
