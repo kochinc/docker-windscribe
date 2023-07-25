@@ -23,13 +23,13 @@ fi
 
 # Log in, and configure the service
 
-/opt/scripts/vpn-login.expect
+expect /opt/scripts/vpn-login.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
 fi
 
-/opt/scripts/vpn-lanbypass.expect
+expect /opt/scripts/vpn-lanbypass.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
@@ -38,19 +38,19 @@ fi
 # Add an route to actual local network.
 ip route add `ip route list default | sed -e "s:default:$LOCAL_NET:"`
 
-/opt/scripts/vpn-protocol.expect
+expect /opt/scripts/vpn-protocol.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
 fi
 
-/opt/scripts/vpn-port.expect
+expect /opt/scripts/vpn-port.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
 fi
 
-/opt/scripts/vpn-firewall.expect
+expect /opt/scripts/vpn-firewall.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
@@ -61,7 +61,7 @@ fi
 
 # Connect to the VPN
 
-/opt/scripts/vpn-connect.expect
+expect /opt/scripts/vpn-connect.expect
 
 if [ ! $? -eq 0 ]; then
     exit 5;
@@ -70,7 +70,7 @@ fi
 # Wait for the connection to come up
 
 i="0"
-/opt/scripts/vpn-health-check.expect
+expect /opt/scripts/vpn-health-check.expect
 while [[ ! $? -eq 0 ]]; do
     sleep 2
     echo "Waiting for the VPN to connect... $i"
@@ -78,13 +78,13 @@ while [[ ! $? -eq 0 ]]; do
     if [[ $i -eq "10" ]]; then
         exit 5
     fi
-    /opt/scripts/vpn-health-check.expect
+    expect /opt/scripts/vpn-health-check.expect
 done
 
 #echo "Port forward is $VPN_PORT"
 
 # Run the setup script for the environment
-#/opt/scripts/app-setup.sh
+#bash /opt/scripts/app-setup.sh
 
 # Run the user app in the docker container
 #su -w VPN_PORT -g docker_group - docker_user -c "/opt/scripts/app-startup.sh"

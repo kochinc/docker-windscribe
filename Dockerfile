@@ -1,6 +1,6 @@
 
-# Based on Ubuntu 20.04 LTS
-FROM ubuntu:20.04
+# Based on Ubuntu 22.04 LTS
+FROM ubuntu:22.04
 
 # The volume for the docker_user home directory, and where configuration files should be stored.
 VOLUME [ "/config" ]
