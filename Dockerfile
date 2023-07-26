@@ -21,12 +21,13 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DNS2=1.0.0.1
 
 # Update ubuntu container, and install the basics, Add windscribe ppa, Install windscribe, and some to be removed utilities
-RUN apt -y update && apt -y dist-upgrade && apt install -y gnupg apt-utils ca-certificates expect iptables iputils-ping && \
-     apt-key adv --keyserver keyserver.ubuntu.com --recv-key FDC247B7 && echo 'deb https://repo.windscribe.com/ubuntu bionic main' | tee /etc/apt/sources.list.d/windscribe-repo.list && \
+RUN apt-get -y update && apt-get -y dist-upgrade && apt-get install -y apt-utils gnupg ca-certificates expect iptables iputils-ping && \
+     apt-key adv --keyserver keyserver.ubuntu.com --recv-key FDC247B7 && \
+     echo 'deb https://repo.windscribe.com/ubuntu bionic main' | tee /etc/apt/sources.list.d/windscribe-repo.list && \
      echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections && \
-     apt -y update && apt -y dist-upgrade && apt install -y windscribe-cli && \
-     apt install -y curl net-tools iputils-tracepath && \
-     apt -y autoremove && apt -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+     apt-get -y update && apt-get install -y windscribe-cli && \
+     apt-get install -y curl net-tools iputils-tracepath && \
+     apt-get -y autoremove --purge && apt-get -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 # Add in the docker user
